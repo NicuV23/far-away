@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Logo from "./components/Logo";
+import Form from "./components/Form";
+import PackingList from "./components/PackingList";
+import Stats from "./components/Stats";
 
-function App() {
+interface Item {
+  id: number;
+  description: string;
+  quantity: number;
+  packed: boolean;
+}
+
+const App = () => {
+  const [items, setItems] = useState<Item[]>([]);
+  const numItems: number = items.length;
+  const numPacked = items.filter((item) => item.packed).length;
+
+  const handleAddItems = (item: Item): void => {
+    setItems((prevItems) => [...prevItems, { ...item, packed: false }]);
+  };
+
+  const handleDeleteItem = (id: number): void => {
+    setItems((items) => items.filter((item) => item.id !== id));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Logo />
+      <Form onAddItems={handleAddItems} />
+      <PackingList items={items} onDeleteItem={handleDeleteItem} />
+      <Stats numPacked={numPacked} numItems={numItems} />
     </div>
   );
-}
+};
 
 export default App;

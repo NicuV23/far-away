@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 
 interface ItemProps {
-  onDeleteItem: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onDeleteItem: () => void;
+  onTogglePacked: (packed: boolean) => void;
   item: { id: number; description: string; quantity: number; packed: boolean };
 }
 
-const Item: React.FC<ItemProps> = ({ item, onDeleteItem }) => {
+const Item: React.FC<ItemProps> = ({ item, onDeleteItem, onTogglePacked }) => {
   const [checked, setChecked] = useState<boolean>(item.packed);
 
   const handleCheckboxChange = () => {
     setChecked(!checked);
+    onTogglePacked(!checked);
   };
 
   return (

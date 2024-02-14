@@ -21,14 +21,28 @@ const App = () => {
   };
 
   const handleDeleteItem = (id: number): void => {
-    setItems((items) => items.filter((item) => item.id !== id));
+    if (id === 0) {
+      setItems([]);
+    } else {
+      setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+    }
+  };
+
+  const handleTogglePacked = (id: number, packed: boolean): void => {
+    setItems((prevItems) =>
+      prevItems.map((item) => (item.id === id ? { ...item, packed } : item))
+    );
   };
 
   return (
     <div className="app">
       <Logo />
       <Form onAddItems={handleAddItems} />
-      <PackingList items={items} onDeleteItem={handleDeleteItem} />
+      <PackingList
+        items={items}
+        onDeleteItem={handleDeleteItem}
+        onTogglePacked={handleTogglePacked}
+      />
       <Stats numPacked={numPacked} numItems={numItems} />
     </div>
   );
